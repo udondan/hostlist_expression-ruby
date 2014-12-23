@@ -1,7 +1,7 @@
 hostlist_expression
 ===================
 
-Ruby gem for expanding hostlist expression.
+Ruby [gem](https://rubygems.org/gems/hostlist_expression) for expanding hostlist expression.
 
 An expression like `your-host-[1-3].com` will expand into an array containing the elements:
 ```
