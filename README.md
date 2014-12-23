@@ -14,7 +14,7 @@ This gem supports **numeric** and **alphabetic** **ranges** and **sequences**, a
 
 By default both `:` ([Ansible](http://docs.ansible.com/intro_inventory.html#hosts-and-groups) style) and `-` ([pdsh](https://code.google.com/p/pdsh/) style) are interpreted as dividers for sequences.
 
-Numeric ranges can have leading zeros `[01-99]`.~~~~
+Numeric ranges can have leading zeros `[01-99]`.
 
 A complex example with all variations:
 
