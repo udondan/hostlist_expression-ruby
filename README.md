@@ -53,8 +53,8 @@ print hosts
 You may optionally pass custom characters for range definitions as 2nd parameter. (String or Array)
 
 ```rb
-hosts = hostlist_expression("your-host-[1-3].com", "~")
-hosts = hostlist_expression("your-host-[1-3].com", ["~", "-", "/"])
+hosts = hostlist_expression("your-host-[1~3].com", "~")
+hosts = hostlist_expression("your-host-[1~3,A-C,x/z].com", ["~", "-", "/"])
 ```
 
 #License
