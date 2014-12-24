@@ -81,7 +81,7 @@ def hostlist_expression(expression, separator = [":", "-"])
       end
       
       # Iterate over all hosts and store the resolved patterns in "replacements"
-      hosts.each do |exitem|
+      hosts.each do |host|
         
         # Iterate over the range
         (from..to).each do |i|
@@ -97,18 +97,19 @@ def hostlist_expression(expression, separator = [":", "-"])
     end
     
     # We clone the hosts array, because we can't modify it while iterating over its elements. So we iterate over the clone instead
-    hosts.clone.each do |exitem|
+    hosts.clone.each do |host|
       
       # Remove the original element
-      hosts.delete(exitem)
+      hosts.delete(host)
       
       # Iterate over previously stored replacements
       replacements.each do|replacement|
         # Adding replacement to hosts array
-        hosts.push(exitem.sub(/\[#{match[0]}\]/, replacement))
+        hosts.push(host.sub(/\[#{match[0]}\]/, replacement))
       end
     end
   end
   
+  # Return uniqe results
   return hosts.uniq
 end
