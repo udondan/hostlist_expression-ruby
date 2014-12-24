@@ -2,17 +2,19 @@
 # License: MIT
 # Home: https://github.com/udondan/hostlist_expression-ruby
 
-# Public: Expand hostlist expression
+# Expand hostlist expression
 #
-# expression  - Hostlist expression.
-# separator - Character(s) for separating ranges (default: [":", "-"]).
+# @param [ String ] expression A host list expression.
+# @param [ String, Array<String> ] separator - Character(s) for separating ranges (default: [":", "-"]).
 #
-# Examples
+# @example
 #
 #   hostlist_expression("your-host-[1-3].com")
 #   # => ["your-host-1.com", "your-host-2.com", "your-host-3.com"]
 #
-# Returns the expanded host list as array.
+# @return [ Array<String> ] A list of expanded hosts.
+#
+# @since 0.1.0
 def hostlist_expression(expression, separator = [":", "-"])
   
   # Validate range separator
