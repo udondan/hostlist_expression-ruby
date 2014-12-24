@@ -5,10 +5,9 @@
 # Expand hostlist expression
 #
 # @param [ String ] expression A host list expression.
-# @param [ String, Array<String> ] separator - Character(s) for separating ranges (default: [":", "-"]).
+# @param [ String, Array<String> ] separator - Character(s) for separating ranges.
 #
 # @example
-#
 #   hostlist_expression("your-host-[1-3].com")
 #   # => ["your-host-1.com", "your-host-2.com", "your-host-3.com"]
 #
