@@ -6,10 +6,7 @@ Gem::Specification.new do |s|
   s.description = <<-EOF
 Expand hostlist expression like those defined in pdsh or Ansible inventory files.
   
-An expression like "your-host-[1-3].com" will expand into an array containing the elements:
- - your-host-1.com
- - your-host-2.com
- - your-host-3.com
+An expression like "host-[1-3].com" will expand into an array containing the elements host-1.com, host-2.com and host-3.com
 
 See https://github.com/udondan/hostlist_expression-ruby for documentation
 EOF
