@@ -12,11 +12,11 @@ host-3.com
 
 This gem supports **numeric** and **alphabetic** **ranges** and **sequences**, and any combination.
 
-By default both characters `:` ([Ansible](http://docs.ansible.com/intro_inventory.html#hosts-and-groups) style) and `-` ([pdsh](https://code.google.com/p/pdsh/wiki/HostListExpressions) style) are interpreted as dividers for ranges.
+By default both characters `:` ([Ansible](http://docs.ansible.com/intro_inventory.html#hosts-and-groups) style) and `-` ([pdsh](https://code.google.com/p/pdsh/wiki/HostListExpressions) style) are interpreted as range connectors.
 
 Numeric ranges can have leading zeros `[01-99]`.
 
-With committee you can define sequences: `[1,3,5]`.
+With commata you can define sequences: `[1,3,5]`.
 
 A complex example with all variations:
 
