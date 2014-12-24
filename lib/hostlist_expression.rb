@@ -52,31 +52,34 @@ def hostlist_expression(expression, separator = [":", "-"])
         range_items.push(range_items[0])
       end
       
-      # Numeric range
-      if range_items[0].match(/^[0-9]+$/) and range_items[1].match(/^[0-9]+$/)
-        isnum = true
-        from = range_items[0].to_i
-        to = range_items[1].to_i
-      
-      # Uppercase alphabetic range
-      elsif range_items[0].length == 1 and range_items[1].length == 1 and /^[[:upper:]]+$/.match(range_items[0]) and /^[[:upper:]]+$/.match(range_items[1])
-        alphabet = ('A'..'Z').to_a
-        from = alphabet.index(range_items[0])
-        to = alphabet.index(range_items[1])
-      
-      # Lowercase alphabetic range
-      elsif range_items[0].length == 1 and range_items[1].length == 1 and /^[[:lower:]]+$/.match(range_items[0]) and /^[[:lower:]]+$/.match(range_items[1])
-        alphabet = ('a'..'z').to_a
-        from = alphabet.index(range_items[0])
-        to = alphabet.index(range_items[1])
-      
+      # Get lower and higher value of range
+      if range_items[0].to_i < range_items[1].to_i
+        from = range_items[0]
+        to = range_items[1]
       else
+        from = range_items[1]
+        to = range_items[0]
       end
       
-      # Fail if "to" is higher than "from"
-      if from>to
-        puts "Error: Invalid host range definition. 'to' part must be higher than 'from' part: #{expression}"
-        exit 1
+      # Numeric range
+      if from.match(/^[0-9]+$/) and to.match(/^[0-9]+$/)
+        isnum = true
+        from = from.to_i
+        to = to.to_i
+      
+      # Uppercase alphabetic range
+      elsif from.length == 1 and to.length == 1 and /^[[:upper:]]+$/.match(from) and /^[[:upper:]]+$/.match(to)
+        alphabet = ('A'..'Z').to_a
+        from = alphabet.index(from)
+        to = alphabet.index(to)
+      
+      # Lowercase alphabetic range
+      elsif from.length == 1 and to.length == 1 and /^[[:lower:]]+$/.match(from) and /^[[:lower:]]+$/.match(to)
+        alphabet = ('a'..'z').to_a
+        from = alphabet.index(from)
+        to = alphabet.index(to)
+      
+      else
         raise "Error: Invalid host range definition #{expression}"
       end
       
@@ -104,6 +107,7 @@ def hostlist_expression(expression, separator = [":", "-"])
       
       # Iterate over previously stored replacements
       replacements.each do|replacement|
+        
         # Adding replacement to hosts array
         hosts.push(host.sub(/\[#{match[0]}\]/, replacement))
       end
