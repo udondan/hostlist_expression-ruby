@@ -1,6 +1,8 @@
 hostlist_expression
 ===================
 
+[![Gem Version](https://badge.fury.io/rb/hostlist_expression.svg)](http://badge.fury.io/rb/hostlist_expression)
+
 Ruby [gem](https://rubygems.org/gems/hostlist_expression) for expanding hostlist expressions.
 
 An expression like `host-[1-3].com` will expand into an array containing these elements:
