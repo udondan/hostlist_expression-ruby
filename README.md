@@ -16,6 +16,8 @@ By default both characters `:` ([Ansible](http://docs.ansible.com/intro_inventor
 
 Numeric ranges can have leading zeros `[01-99]`.
 
+With committee you can define sequences: `[1,3,5]`.
+
 A complex example with all variations:
 
 Expression: `host-[A-C]-[c,d,001-003].com`
@@ -39,7 +41,7 @@ host-C-002.com
 host-C-003.com
 ```
 
-Please note, the left item of a range has to be lower than the right item. A range like `[20-10]` or `[Z-A]` will fail. Also, in an alphabetic range both items are required to be either lowercase or uppercase, you can't mix. A range like `[A-c]` will fail.
+Please note, in an alphabetic range both items are required to be either lowercase or uppercase, you can't mix. A range like `[A-c]` will throw an exception.
 
 #Usage:
 ```rb

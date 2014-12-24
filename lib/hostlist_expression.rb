@@ -1,7 +1,7 @@
 # Author: Daniel Schroeder
 # License: MIT
 # Home: https://github.com/udondan/hostlist_expression-ruby
-#
+
 # Public: Expand hostlist expression
 #
 # expression  - Hostlist expression.
@@ -20,11 +20,9 @@ def hostlist_expression(expression, separator = [":", "-"])
     separator = separator.join("")
   end
   if not separator.class == String
-    puts "Error: Range separator must be either of type String or Array. given: #{separator.class}"
-    exit 1
+    raise "Error: Range separator must be either of type String or Array. given: #{separator.class}"
   elsif separator.length == 0
-    puts "Error: Range separator is empty"
-    exit 1
+    raise "Error: Range separator is empty"
   end
   
   # Prepeare separator for use in regular expressions
@@ -73,14 +71,13 @@ def hostlist_expression(expression, separator = [":", "-"])
         to = alphabet.index(range_items[1])
       
       else
-        puts "Error: Invalid host range definition #{expression}"
-        exit 1
       end
       
       # Fail if "to" is higher than "from"
       if from>to
         puts "Error: Invalid host range definition. 'to' part must be higher than 'from' part: #{expression}"
         exit 1
+        raise "Error: Invalid host range definition #{expression}"
       end
       
       # Iterate over all hosts and store the resolved patterns in "replacements"
