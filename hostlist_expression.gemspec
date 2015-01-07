@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "hostlist_expression"
-  s.version     = "0.2.0"
+  s.version     = "0.2.1"
   s.date        = "2014-12-24"
   s.summary     = "Expand hostlist expression"
   s.description = <<-EOF
