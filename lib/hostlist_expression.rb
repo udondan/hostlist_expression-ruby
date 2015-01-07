@@ -54,7 +54,7 @@ def hostlist_expression(expression, separator = [":", "-"])
       end
       
       # Get lower and higher value of range
-      if range_items[0].to_i < range_items[1].to_i
+      if range_items[0] < range_items[1]
         from = range_items[0]
         to = range_items[1]
       else
