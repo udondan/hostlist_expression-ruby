@@ -1,7 +1,8 @@
 hostlist_expression
 ===================
 
-[![Gem Version](https://badge.fury.io/rb/hostlist_expression.svg)](http://badge.fury.io/rb/hostlist_expression)
+[![Gem Version](https://badge.fury.io/rb/hostlist_expression.svg)](http://badge.fury.io/rb/hostlist_expression) [![Gem Version](https://travis-ci.org/udondan/hostlist_expression-ruby.svg)](https://travis-ci.org/udondan/hostlist_expression-ruby)
+
 
 Ruby [gem](https://rubygems.org/gems/hostlist_expression) for expanding hostlist expressions.
 
