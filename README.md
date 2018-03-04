@@ -1,5 +1,4 @@
-hostlist_expression
-===================
+# hostlist_expression
 
 [![Gem Version](https://badge.fury.io/rb/hostlist_expression.svg)](http://badge.fury.io/rb/hostlist_expression) [![Gem Version](https://travis-ci.org/udondan/hostlist_expression-ruby.svg)](https://travis-ci.org/udondan/hostlist_expression-ruby)
 
@@ -46,7 +45,7 @@ host-C-003.com
 
 Please note, in an alphabetic range both items are required to be either lowercase or uppercase, you can't mix. A range like `[A-c]` will throw an exception.
 
-#Usage:
+# Usage:
 ```rb
 require "hostlist_expression"
 hosts = hostlist_expression("host-[1-3].com")
@@ -62,5 +61,5 @@ hosts = hostlist_expression("host-[1~3].com", "~")
 hosts = hostlist_expression("host-[1~3,A-C,x/z].com", ["~", "-", "/"])
 ```
 
-#License
+# License
 MIT
