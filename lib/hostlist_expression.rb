@@ -53,13 +53,19 @@ def hostlist_expression(expression, separator = [":", "-"])
         range_items.push(range_items[0])
       end
       
-      # Get lower and higher value of range
-      if range_items[0] < range_items[1]
-        from = range_items[0]
-        to = range_items[1]
+      if range_items[0].match(/^[0-9]+$/) and range_items[1].match(/^[0-9]+$/)
+        # Get lower and higher value of range
+        if range_items[0].to_i < range_items[1].to_i
+          from,to = range_items
+        else
+          to,from = range_items
+        end
       else
-        from = range_items[1]
-        to = range_items[0]
+        if range_items[0] < range_items[1]
+          from,to = range_items
+        else
+          to,from = range_items
+        end
       end
       
       # Numeric range
