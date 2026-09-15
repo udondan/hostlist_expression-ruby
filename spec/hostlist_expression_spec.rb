@@ -3,6 +3,10 @@
 require "hostlist_expression"
 
 RSpec.describe "#hostlist_expression" do
+  it "plain host without range" do
+    expect(hostlist_expression("host.com")).to eq(["host.com"])
+  end
+
   it "numeric from 1 to 99" do
     expect(hostlist_expression("host-[1-99].com")).to eq((1..99).map { |n| "host-#{n}.com" })
   end

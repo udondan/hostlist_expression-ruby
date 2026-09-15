@@ -28,8 +28,8 @@ def hostlist_expression(expression, separator = [":", "-"])
   # Prepare separator for use in regular expressions
   separator = Regexp.escape(separator)
 
-  # Return input, if this is not a hostlist expression
-  return expression unless expression.match(/\[(?:[\da-z]+(?:[#{separator}][\da-z]+)?,?)+\]/i)
+  # Return input as single host, if this is not a hostlist expression
+  return [expression] unless expression.match(/\[(?:[\da-z]+(?:[#{separator}][\da-z]+)?,?)+\]/i)
 
   # hosts array will hold all expanded results,
   # it as well is the working array where partially resolved results are stored
