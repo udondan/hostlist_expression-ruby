@@ -1,0 +1,38 @@
+name: Publish
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish (e.g. 0.2.1)
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Uses RubyGems trusted publishing (OIDC), so no API key secret is needed.
+  # The trusted publisher on rubygems.org is bound to this workflow filename
+  # and the rubygems environment.
+  rubygems:
+    name: Publish to RubyGems
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          persist-credentials: false
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+          bundler-cache: true
+
+      - uses: rubygems/release-gem@7f9650160c1a4e7989fdc9855807bdbd421d8b6b # v1.4.1
