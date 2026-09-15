@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "63b4e8394f0b1cbbc18b5dd862af2c4a554f2e83",
+  "release-type": "ruby",
+  "package-name": "hostlist_expression",
+  "version-file": "hostlist_expression.gemspec",
+  "changelog-path": "CHANGELOG.md",
+  "include-component-in-tag": false,
+  "include-v-in-tag": false,
+  "bump-minor-pre-major": false,
+  "bump-patch-for-minor-pre-major": false,
+  "draft": false,
+  "prerelease": false,
+  "packages": {
+    ".": {}
+  }
+}
