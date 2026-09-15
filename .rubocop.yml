@@ -1,0 +1,34 @@
+plugins:
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  Exclude:
+    - "vendor/**/*"
+
+# The gem exposes a top-level method, there is no class to describe.
+RSpec/DescribeClass:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# The gem is a single, well-covered expansion method. Splitting it up just to
+# satisfy the metrics cops would add risk without making it clearer.
+Metrics/AbcSize:
+  Exclude:
+    - lib/hostlist_expression.rb
+Metrics/BlockLength:
+  Exclude:
+    - lib/hostlist_expression.rb
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - lib/hostlist_expression.rb
+Metrics/MethodLength:
+  Exclude:
+    - lib/hostlist_expression.rb
+Metrics/PerceivedComplexity:
+  Exclude:
+    - lib/hostlist_expression.rb
