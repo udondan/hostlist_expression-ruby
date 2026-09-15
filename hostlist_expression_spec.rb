@@ -45,6 +45,29 @@ describe "separator - " do
       expect(hosts["#{n - 1}".to_i]).to eq "host-#{leading_zero}.com"
     }
   end
+  it 'numeric from 12 to 2' do
+    hosts = Array.new
+    hosts = hostlist_expression("host-[12-2].com")
+    expect(hosts.instance_of?(Array)).to be_truthy
+    2.upto(12){|n|
+      expect(hosts["#{n - 2}".to_i]).to eq "host-#{n}.com"
+    }
+  end
+  it 'numeric from 10 to 9' do
+    hosts = Array.new
+    hosts = hostlist_expression("host-[10-9].com")
+    expect(hosts.instance_of?(Array)).to be_truthy
+    expect(["host-9.com", "host-10.com"]).to match_array(hosts)
+  end
+  it 'numeric from 1 to 010' do
+    hosts = Array.new
+    hosts = hostlist_expression("host-[1-010].com")
+    expect(hosts.instance_of?(Array)).to be_truthy
+    1.upto(10){|n|
+      leading_zero = n.to_s.rjust(3, '0')
+      expect(hosts["#{n - 1}".to_i]).to eq "host-#{leading_zero}.com"
+    }
+  end
   it 'numeric sequence 10, 20, 30' do
     hosts = Array.new
     hosts = hostlist_expression("host-[10,20,30].com")

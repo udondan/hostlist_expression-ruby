@@ -72,6 +72,9 @@ def hostlist_expression(expression, separator = [":", "-"])
         raise "Error: Invalid host range definition #{expression}"
       end
       
+      # Pad numbers only if a bound has leading zeros, to the width of the longest bound
+      padding = range_items.any? { |item| item.match(/^0[0-9]/) } ? range_items.map(&:length).max : 0
+
       # Iterate over all hosts and store the resolved patterns in "replacements"
       hosts.each do |host|
         
@@ -79,7 +82,7 @@ def hostlist_expression(expression, separator = [":", "-"])
         (from..to).each do |i|
           if isnum
             # Formatting number with leading zeros
-            replacements.push("#{i}".rjust(range_items[0].length, "0"))
+            replacements.push("#{i}".rjust(padding, "0"))
           else
             # Select correct letter from alphabet
             replacements.push(alphabet[i])
