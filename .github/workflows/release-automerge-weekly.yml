@@ -19,7 +19,7 @@ jobs:
       - name: Merge release PR
         run: |
           pr=$(gh pr list --repo "${GITHUB_REPOSITORY}" \
-            --head release-please--branches--main --state open \
+            --head release-please--branches--main--components--hostlist_expression --state open \
             --json number --jq '.[0].number // empty')
           if [ -z "${pr}" ]; then
             echo "No open release PR."
