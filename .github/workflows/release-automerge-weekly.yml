@@ -1,0 +1,31 @@
+---
+name: Release Automerge
+
+on:
+  schedule:
+    - cron: 0 18 * * 0
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge-latest-release:
+    runs-on: ubuntu-latest
+    steps:
+      # OVERRIDE_TOKEN is required: a merge made with GITHUB_TOKEN would not
+      # trigger the release-please workflow that creates the release.
+      - name: Merge release PR
+        run: |
+          pr=$(gh pr list --repo "${GITHUB_REPOSITORY}" \
+            --head release-please--branches--main --state open \
+            --json number --jq '.[0].number // empty')
+          if [ -z "${pr}" ]; then
+            echo "No open release PR."
+            exit 0
+          fi
+          gh pr checks "${pr}" --repo "${GITHUB_REPOSITORY}"
+          gh pr merge "${pr}" --squash --repo "${GITHUB_REPOSITORY}"
+        env:
+          GH_TOKEN: ${{ secrets.OVERRIDE_TOKEN }}

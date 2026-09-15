@@ -1,0 +1,56 @@
+---
+name: release-please
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      pr_branch: ${{ steps.release.outputs.pr && fromJSON(steps.release.outputs.pr).headBranchName || '' }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ secrets.OVERRIDE_TOKEN }}
+
+  # release-please bumps the gem version in the PATH section of Gemfile.lock
+  # but not in the CHECKSUMS section. CI installs gems in frozen mode, which
+  # rejects that lockfile, so it is regenerated on the release branch.
+  # OVERRIDE_TOKEN is required: a push made with GITHUB_TOKEN would not
+  # trigger CI on the release PR.
+  update-lockfile:
+    needs: release-please
+    if: needs.release-please.outputs.pr_branch != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release-please.outputs.pr_branch }}
+          token: ${{ secrets.OVERRIDE_TOKEN }}
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+
+      - name: Regenerate Gemfile.lock
+        run: bundle lock
+
+      - name: Commit Gemfile.lock
+        run: |
+          if git diff --quiet Gemfile.lock; then
+            echo "Gemfile.lock is up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update Gemfile.lock" Gemfile.lock
+          git push
