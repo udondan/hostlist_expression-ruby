@@ -1,6 +1,6 @@
 # hostlist_expression
 
-[![Gem Version](https://badge.fury.io/rb/hostlist_expression.svg)](http://badge.fury.io/rb/hostlist_expression) [![Gem Version](https://travis-ci.org/udondan/hostlist_expression-ruby.svg)](https://travis-ci.org/udondan/hostlist_expression-ruby)
+[![Gem Version](https://badge.fury.io/rb/hostlist_expression.svg)](http://badge.fury.io/rb/hostlist_expression)
 
 
 Ruby [gem](https://rubygems.org/gems/hostlist_expression) for expanding hostlist expressions.
@@ -59,6 +59,13 @@ You may optionally pass custom characters for range definitions as 2nd parameter
 ```rb
 hosts = hostlist_expression("host-[1~3].com", "~")
 hosts = hostlist_expression("host-[1~3,A-C,x/z].com", ["~", "-", "/"])
+```
+
+# Development
+
+```sh
+bundle install
+bundle exec rake    # runs RuboCop and the RSpec suite
 ```
 
 # License
