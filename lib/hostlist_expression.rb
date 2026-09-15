@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Author: Daniel Schroeder
 # License: MIT
 # Home: https://github.com/udondan/hostlist_expression-ruby
@@ -15,44 +17,37 @@
 #
 # @since 0.1.0
 def hostlist_expression(expression, separator = [":", "-"])
-  
   # Validate range separator
-  if separator.class == Array
-    separator = separator.join("")
-  end
-  if not separator.class == String
+  separator = separator.join if separator.is_a?(Array)
+  if !separator.is_a?(String)
     raise "Error: Range separator must be either of type String or Array. given: #{separator.class}"
-  elsif separator.length == 0
+  elsif separator.empty?
     raise "Error: Range separator is empty"
   end
-  
-  # Prepeare separator for use in regular expressions
+
+  # Prepare separator for use in regular expressions
   separator = Regexp.escape(separator)
-  
+
   # Return input, if this is not a hostlist expression
-  return expression if not expression.match(/\[(?:[\da-z]+(?:[#{separator}][\da-z]+)?,?)+\]/i)
-  
-  # hosts array will hold all expanded results, it as well is the working array where partially resolved results are stored
-  hosts = Array.new
-  hosts.push(expression)
-  
+  return expression unless expression.match(/\[(?:[\da-z]+(?:[#{separator}][\da-z]+)?,?)+\]/i)
+
+  # hosts array will hold all expanded results,
+  # it as well is the working array where partially resolved results are stored
+  hosts = [expression]
+
   # Iterate over all range definitions, e.g. [0:10] or [A:Z]
-  expression.scan(/\[([\da-z#{separator},]+)\]/i).each do|match|
-    
+  expression.scan(/\[([\da-z#{separator},]+)\]/i).each do |match|
     # Will hold replacements for each match
-    replacements = Array.new
-    
+    replacements = []
+
     # The pattern may be a sequence with multiple ranges. Split...
     match[0].split(",").each do |range|
-      
       # Split ranges by range separator
       range_items = range.split(/[#{separator}]/)
-      
+
       # If it's not really a range, duplicate the single item
-      if range_items.length == 1
-        range_items.push(range_items[0])
-      end
-      
+      range_items.push(range_items[0]) if range_items.length == 1
+
       # Numeric range
       if range_items.all? { |item| item.match(/^[0-9]+$/) }
         isnum = true
@@ -60,29 +55,28 @@ def hostlist_expression(expression, separator = [":", "-"])
 
       # Uppercase alphabetic range
       elsif range_items.all? { |item| item.match(/^[A-Z]$/) }
-        alphabet = ('A'..'Z').to_a
+        alphabet = ("A".."Z").to_a
         from, to = range_items.map { |item| alphabet.index(item) }.sort
 
       # Lowercase alphabetic range
       elsif range_items.all? { |item| item.match(/^[a-z]$/) }
-        alphabet = ('a'..'z').to_a
+        alphabet = ("a".."z").to_a
         from, to = range_items.map { |item| alphabet.index(item) }.sort
 
       else
         raise "Error: Invalid host range definition #{expression}"
       end
-      
+
       # Pad numbers only if a bound has leading zeros, to the width of the longest bound
       padding = range_items.any? { |item| item.match(/^0[0-9]/) } ? range_items.map(&:length).max : 0
 
       # Iterate over all hosts and store the resolved patterns in "replacements"
-      hosts.each do |host|
-        
+      hosts.each do |_host|
         # Iterate over the range
         (from..to).each do |i|
           if isnum
             # Formatting number with leading zeros
-            replacements.push("#{i}".rjust(padding, "0"))
+            replacements.push(i.to_s.rjust(padding, "0"))
           else
             # Select correct letter from alphabet
             replacements.push(alphabet[i])
@@ -90,22 +84,21 @@ def hostlist_expression(expression, separator = [":", "-"])
         end
       end
     end
-    
-    # We clone the hosts array, because we can't modify it while iterating over its elements. So we iterate over the clone instead
+
+    # We clone the hosts array, because we can't modify it while iterating over its elements.
+    # So we iterate over the clone instead
     hosts.clone.each do |host|
-      
       # Remove the original element
       hosts.delete(host)
-      
+
       # Iterate over previously stored replacements
-      replacements.each do|replacement|
-        
+      replacements.each do |replacement|
         # Adding replacement to hosts array
         hosts.push(host.sub(/\[#{match[0]}\]/, replacement))
       end
     end
   end
-  
-  # Return uniqe results
-  return hosts.uniq
+
+  # Return unique results
+  hosts.uniq
 end

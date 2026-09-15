@@ -22,9 +22,9 @@ build/
 
 ## Environment normalisation:
 /.bundle/
+/vendor/
 /lib/bundler/man/
 
-Gemfile.lock
 .ruby-version
 .ruby-gemset
 
