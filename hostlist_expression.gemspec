@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "hostlist_expression"
-  s.version     = "0.2.1"
+  s.version     = "1.0.0"
   s.summary     = "Expand hostlist expression"
   s.description = <<~DESCRIPTION
     Expand hostlist expression like those defined in pdsh or Ansible inventory files.
