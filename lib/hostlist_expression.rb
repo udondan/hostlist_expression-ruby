@@ -53,39 +53,21 @@ def hostlist_expression(expression, separator = [":", "-"])
         range_items.push(range_items[0])
       end
       
-      if range_items[0].match(/^[0-9]+$/) and range_items[1].match(/^[0-9]+$/)
-        # Get lower and higher value of range
-        if range_items[0].to_i < range_items[1].to_i
-          from,to = range_items
-        else
-          to,from = range_items
-        end
-      else
-        if range_items[0] < range_items[1]
-          from,to = range_items
-        else
-          to,from = range_items
-        end
-      end
-      
       # Numeric range
-      if from.match(/^[0-9]+$/) and to.match(/^[0-9]+$/)
+      if range_items.all? { |item| item.match(/^[0-9]+$/) }
         isnum = true
-        from = from.to_i
-        to = to.to_i
-      
+        from, to = range_items.map(&:to_i).sort
+
       # Uppercase alphabetic range
-      elsif from.length == 1 and to.length == 1 and /^[[:upper:]]+$/.match(from) and /^[[:upper:]]+$/.match(to)
+      elsif range_items.all? { |item| item.match(/^[A-Z]$/) }
         alphabet = ('A'..'Z').to_a
-        from = alphabet.index(from)
-        to = alphabet.index(to)
-      
+        from, to = range_items.map { |item| alphabet.index(item) }.sort
+
       # Lowercase alphabetic range
-      elsif from.length == 1 and to.length == 1 and /^[[:lower:]]+$/.match(from) and /^[[:lower:]]+$/.match(to)
+      elsif range_items.all? { |item| item.match(/^[a-z]$/) }
         alphabet = ('a'..'z').to_a
-        from = alphabet.index(from)
-        to = alphabet.index(to)
-      
+        from, to = range_items.map { |item| alphabet.index(item) }.sort
+
       else
         raise "Error: Invalid host range definition #{expression}"
       end
