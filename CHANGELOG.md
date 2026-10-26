@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.2](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.1...v1.0.2) (2026-10-26)
+
+
+### Dependencies
+
+* **deps:** update dependency rubocop to v1.92.1 ([#31](https://github.com/udondan/hostlist_expression-ruby/issues/31)) ([6f82ea9](https://github.com/udondan/hostlist_expression-ruby/commit/6f82ea91eb1cafb916f7b19bdfec11a236c543e3))
+* **deps:** update dependency ruby to v4.0.8 ([#29](https://github.com/udondan/hostlist_expression-ruby/issues/29)) ([1840693](https://github.com/udondan/hostlist_expression-ruby/commit/18406939659a0b850fa6bd50da5a917727091866))
+* **deps:** update dependency ruby to v4.0.9 ([#32](https://github.com/udondan/hostlist_expression-ruby/issues/32)) ([1d48ff6](https://github.com/udondan/hostlist_expression-ruby/commit/1d48ff6b31fba31cb99d359e64a7353a80861b90))
+
 ## [1.0.1](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.0...v1.0.1) (2026-10-13)
 
 
