@@ -1,0 +1,5 @@
+[tools]
+# Used by the actions job in ci.yml.
+actionlint = "1.7.12"
+# The runner's own shellcheck is older and reports differently. actionlint runs it over every `run:` block.
+shellcheck = "0.11.0"
