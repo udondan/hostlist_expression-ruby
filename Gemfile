@@ -10,4 +10,6 @@ group :development do
   gem "rubocop", "1.92.1"
   gem "rubocop-rake", "0.7.1"
   gem "rubocop-rspec", "3.10.2"
+  gem "simplecov", "1.3.2"
+  gem "simplecov-cobertura", "4.0.0"
 end
