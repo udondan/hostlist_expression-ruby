@@ -34,6 +34,11 @@ jobs:
       - uses: ruby/setup-ruby@7f797815d8adceb1c412e7abefdd1ab4abc47a5f # v1.335.0
         with:
           ruby-version: "4.0.9"
-          bundler-cache: true
+
+      # Installed without bundler-cache, so a release is never built from a restored cache.
+      - name: Install gems
+        run: bundle install
+        env:
+          BUNDLE_FROZEN: "true"
 
       - uses: rubygems/release-gem@7f9650160c1a4e7989fdc9855807bdbd421d8b6b # v1.4.1
