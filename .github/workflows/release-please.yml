@@ -7,9 +7,8 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pull-requests: write
+# Both jobs use OVERRIDE_TOKEN, not the GITHUB_TOKEN.
+permissions: {}
 
 jobs:
   release-please:
@@ -36,8 +35,9 @@ jobs:
         with:
           ref: ${{ needs.release-please.outputs.pr_branch }}
           token: ${{ secrets.OVERRIDE_TOKEN }}
+          persist-credentials: true # zizmor: ignore[artipacked] pushes the Gemfile.lock commit
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@7f797815d8adceb1c412e7abefdd1ab4abc47a5f # v1.335.0
         with:
           ruby-version: "4.0.9"
 
