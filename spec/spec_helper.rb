@@ -5,6 +5,9 @@ require "simplecov-cobertura"
 
 SimpleCov.start do
   add_filter "/spec/"
+  enable_coverage :branch
+  # Only in CI, so running a single example locally doesn't fail.
+  minimum_coverage line: 100, branch: 100 if ENV["CI"]
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::HTMLFormatter,
