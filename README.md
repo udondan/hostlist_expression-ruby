@@ -1,6 +1,13 @@
 # hostlist_expression
 
-[![Gem Version](https://badge.fury.io/rb/hostlist_expression.svg)](https://badge.fury.io/rb/hostlist_expression)
+![hostlist_expression: host-[1-3].com expands to host-1.com, host-2.com and host-3.com](.github/header.webp)
+
+[![Gem](https://img.shields.io/gem/v/hostlist_expression)](https://rubygems.org/gems/hostlist_expression)
+[![Downloads](https://img.shields.io/gem/dt/hostlist_expression)](https://rubygems.org/gems/hostlist_expression)
+[![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.3-CC342D)](hostlist_expression.gemspec)
+[![CI](https://github.com/udondan/hostlist_expression-ruby/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/udondan/hostlist_expression-ruby/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/udondan/hostlist_expression-ruby/graph/badge.svg)](https://codecov.io/gh/udondan/hostlist_expression-ruby)
+[![License](https://img.shields.io/github/license/udondan/hostlist_expression-ruby)](LICENSE)
 
 Ruby [gem](https://rubygems.org/gems/hostlist_expression) for expanding hostlist expressions.
 

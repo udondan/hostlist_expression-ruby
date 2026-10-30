@@ -66,4 +66,40 @@ RSpec.describe "#hostlist_expression" do
       "host-fA.com", "host-fB.com"
     )
   end
+
+  it "colon as range connector" do
+    expect(hostlist_expression("host-[1:3].com")).to eq(%w[host-1.com host-2.com host-3.com])
+  end
+
+  it "custom range connector as String" do
+    expect(hostlist_expression("host-[1~3].com", "~")).to eq(%w[host-1.com host-2.com host-3.com])
+  end
+
+  it "custom range connectors as Array" do
+    expect(hostlist_expression("host-[1~2,a/b].com", ["~", "/"])).to eq(
+      %w[host-1.com host-2.com host-a.com host-b.com]
+    )
+  end
+
+  it "raises on a range connector that is neither String nor Array" do
+    expect { hostlist_expression("host-[1-3].com", 1) }.to raise_error(
+      RuntimeError, /must be either of type String or Array/
+    )
+  end
+
+  it "raises on an empty String range connector" do
+    expect { hostlist_expression("host-[1-3].com", "") }.to raise_error(RuntimeError, /separator is empty/)
+  end
+
+  it "raises on an empty Array of range connectors" do
+    expect { hostlist_expression("host-[1-3].com", []) }.to raise_error(RuntimeError, /separator is empty/)
+  end
+
+  it "raises on a range mixing upper and lower case" do
+    expect { hostlist_expression("host-[A-c].com") }.to raise_error(RuntimeError, /Invalid host range/)
+  end
+
+  it "raises on a range mixing letters and numbers" do
+    expect { hostlist_expression("host-[a-1].com") }.to raise_error(RuntimeError, /Invalid host range/)
+  end
 end
