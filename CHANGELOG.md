@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.2...v1.0.3) (2026-10-30)
+
+
+### Dependencies
+
+* **deps:** update jdx/mise-action action to v5 ([#35](https://github.com/udondan/hostlist_expression-ruby/issues/35)) ([44bce05](https://github.com/udondan/hostlist_expression-ruby/commit/44bce05bf9440e28a9bfb3a871396749666dec2c))
+* **deps:** update jdx/mise-action action to v5.2.4 ([#38](https://github.com/udondan/hostlist_expression-ruby/issues/38)) ([d82b3ce](https://github.com/udondan/hostlist_expression-ruby/commit/d82b3ce291988a725ce0a443e402ffb93ef83cfb))
+
 ## [1.0.2](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.1...v1.0.2) (2026-10-26)
 
 
