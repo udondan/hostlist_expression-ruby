@@ -4,6 +4,62 @@
 # License: MIT
 # Home: https://github.com/udondan/hostlist_expression-ruby
 
+# Expansion logic behind {#hostlist_expression}.
+module HostlistExpression
+  class << self
+    # Expand hostlist expression. See {#hostlist_expression}.
+    def expand(expression, separator = [":", "-"])
+      separator = separator_pattern(separator)
+
+      # Return input as single host, if this is not a hostlist expression
+      return [expression] unless expression.match?(/\[(?:[\da-z]+(?:[#{separator}][\da-z]+)?,?)+\]/i)
+
+      # Replace each bracket group, e.g. [0:10] or [A,C-E], in every partial host
+      expression.scan(/\[([\da-z#{separator},]+)\]/i).reduce([expression]) do |hosts, (group)|
+        replacements = group.split(",").flat_map { |range| expand_range(range, separator, expression) }
+        hosts.flat_map { |host| replacements.map { |replacement| host.sub("[#{group}]", replacement) } }
+      end.uniq
+    end
+
+    private
+
+    # Validate the separator and escape it for use in a regexp character class
+    def separator_pattern(separator)
+      separator = separator.join if separator.is_a?(Array)
+      unless separator.is_a?(String)
+        raise "Error: Range separator must be either of type String or Array. given: #{separator.class}"
+      end
+      raise "Error: Range separator is empty" if separator.empty?
+
+      Regexp.escape(separator)
+    end
+
+    # Expand a single sequence item, e.g. "1-3" or "A", into its values
+    def expand_range(range, separator, expression)
+      items = range.split(/[#{separator}]/)
+
+      # If it's not really a range, duplicate the single item
+      items.push(items[0]) if items.length == 1
+
+      if items.all?(/\A[0-9]+\z/)
+        numeric_range(items)
+      elsif items.all?(/\A[A-Z]\z/) || items.all?(/\A[a-z]\z/)
+        from, to = items.sort
+        (from..to).to_a
+      else
+        raise "Error: Invalid host range definition #{expression}"
+      end
+    end
+
+    # Pad numbers only if a bound has leading zeros, to the width of the longest bound
+    def numeric_range(items)
+      from, to = items.map(&:to_i).sort
+      padding = items.any?(/\A0[0-9]/) ? items.map(&:length).max : 0
+      (from..to).map { |i| i.to_s.rjust(padding, "0") }
+    end
+  end
+end
+
 # Expand hostlist expression
 #
 # @param [ String ] expression A host list expression.
@@ -15,90 +71,9 @@
 #
 # @return [ Array<String> ] A list of expanded hosts.
 #
+# @raise [ RuntimeError ] If the separator or a range definition is invalid.
+#
 # @since 0.1.0
 def hostlist_expression(expression, separator = [":", "-"])
-  # Validate range separator
-  separator = separator.join if separator.is_a?(Array)
-  if !separator.is_a?(String)
-    raise "Error: Range separator must be either of type String or Array. given: #{separator.class}"
-  elsif separator.empty?
-    raise "Error: Range separator is empty"
-  end
-
-  # Prepare separator for use in regular expressions
-  separator = Regexp.escape(separator)
-
-  # Return input as single host, if this is not a hostlist expression
-  return [expression] unless expression.match(/\[(?:[\da-z]+(?:[#{separator}][\da-z]+)?,?)+\]/i)
-
-  # hosts array will hold all expanded results,
-  # it as well is the working array where partially resolved results are stored
-  hosts = [expression]
-
-  # Iterate over all range definitions, e.g. [0:10] or [A:Z]
-  expression.scan(/\[([\da-z#{separator},]+)\]/i).each do |match|
-    # Will hold replacements for each match
-    replacements = []
-
-    # The pattern may be a sequence with multiple ranges. Split...
-    match[0].split(",").each do |range|
-      # Split ranges by range separator
-      range_items = range.split(/[#{separator}]/)
-
-      # If it's not really a range, duplicate the single item
-      range_items.push(range_items[0]) if range_items.length == 1
-
-      # Numeric range
-      if range_items.all? { |item| item.match(/^[0-9]+$/) }
-        isnum = true
-        from, to = range_items.map(&:to_i).sort
-
-      # Uppercase alphabetic range
-      elsif range_items.all? { |item| item.match(/^[A-Z]$/) }
-        alphabet = ("A".."Z").to_a
-        from, to = range_items.map { |item| alphabet.index(item) }.sort
-
-      # Lowercase alphabetic range
-      elsif range_items.all? { |item| item.match(/^[a-z]$/) }
-        alphabet = ("a".."z").to_a
-        from, to = range_items.map { |item| alphabet.index(item) }.sort
-
-      else
-        raise "Error: Invalid host range definition #{expression}"
-      end
-
-      # Pad numbers only if a bound has leading zeros, to the width of the longest bound
-      padding = range_items.any? { |item| item.match(/^0[0-9]/) } ? range_items.map(&:length).max : 0
-
-      # Iterate over all hosts and store the resolved patterns in "replacements"
-      hosts.each do |_host|
-        # Iterate over the range
-        (from..to).each do |i|
-          if isnum
-            # Formatting number with leading zeros
-            replacements.push(i.to_s.rjust(padding, "0"))
-          else
-            # Select correct letter from alphabet
-            replacements.push(alphabet[i])
-          end
-        end
-      end
-    end
-
-    # We clone the hosts array, because we can't modify it while iterating over its elements.
-    # So we iterate over the clone instead
-    hosts.clone.each do |host|
-      # Remove the original element
-      hosts.delete(host)
-
-      # Iterate over previously stored replacements
-      replacements.each do |replacement|
-        # Adding replacement to hosts array
-        hosts.push(host.sub(/\[#{match[0]}\]/, replacement))
-      end
-    end
-  end
-
-  # Return unique results
-  hosts.uniq
+  HostlistExpression.expand(expression, separator)
 end

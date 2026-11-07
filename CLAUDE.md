@@ -11,13 +11,16 @@ bundle exec rubocop                                     # lint only (CI runs thi
 bundle exec rspec                                       # tests only (CI matrix: Ruby 3.3, 3.4, 4.0)
 bundle exec rspec spec/hostlist_expression_spec.rb:42   # single example by line
 bundle exec rspec -e "numeric from 1 to 99"             # single example by name
+qlty smells --all                                       # code smells (config in .qlty/qlty.toml)
 ```
+
+The `qlty` CI job fails a pull request that introduces new code smells compared to main.
 
 Specs run in random order with warnings enabled (`spec/spec_helper.rb`). Minimum Ruby is 3.3 (gemspec and `.rubocop.yml` TargetRubyVersion).
 
 ## Architecture
 
-The whole gem is one top-level method, `hostlist_expression(expression, separator = [":", "-"])`, in `lib/hostlist_expression.rb`. There is no module or class, which is why `RSpec/DescribeClass` is disabled. The gemspec's `s.files` lists only that file, so any new lib file must be added there too.
+The public API is one top-level method, `hostlist_expression(expression, separator = [":", "-"])`, in `lib/hostlist_expression.rb`. It delegates to `HostlistExpression.expand`, and the module keeps the helpers private so no further methods land on `Object`. The spec describes the top-level method, which is why `RSpec/DescribeClass` is disabled. The gemspec's `s.files` lists only that file, so any new lib file must be added there too.
 
 How expansion works:
 
@@ -25,9 +28,9 @@ How expansion works:
 - Each `[...]` bracket group is processed in order. Its content is split on `,` into sequence items, and each item is split on the separator characters into a range.
 - A range must be all numeric, all single uppercase letters, or all single lowercase letters. Anything else raises a plain `RuntimeError`. Bounds are sorted, so `[9-1]` equals `[1-9]`.
 - Zero padding applies only when a bound has a leading zero (`[01-99]`, `[1-010]`). The width is the longest bound.
-- The cartesian product is built by replacing each bracket group in every partial host. The result is de-duplicated with `uniq`, which also hides duplicate replacements that the inner `hosts.each` loop creates.
+- The cartesian product is built by replacing each bracket group in every partial host. The result is de-duplicated with `uniq`.
 
-RuboCop's metrics cops are excluded for `lib/hostlist_expression.rb` on purpose. Don't split the method just to satisfy them.
+RuboCop's metrics cops and the Qlty smell check apply to the library too. Keep each method small instead of adding exclusions.
 
 ## Releases & dependencies
 
