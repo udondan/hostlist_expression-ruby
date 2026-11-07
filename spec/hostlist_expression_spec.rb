@@ -85,6 +85,12 @@ RSpec.describe "#hostlist_expression" do
     )
   end
 
+  it "custom range connectors with regexp special characters" do
+    expect(hostlist_expression("host-[1|2,a^b].com", ["|", "^"])).to eq(
+      %w[host-1.com host-2.com host-a.com host-b.com]
+    )
+  end
+
   it "raises on a range connector that is neither String nor Array" do
     expect { hostlist_expression("host-[1-3].com", 1) }.to raise_error(
       RuntimeError, /must be either of type String or Array/

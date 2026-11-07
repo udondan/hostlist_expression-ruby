@@ -17,7 +17,7 @@ module HostlistExpression
       # Replace each bracket group, e.g. [0:10] or [A,C-E], in every partial host
       expression.scan(/\[([\da-z#{separator},]+)\]/i).reduce([expression]) do |hosts, (group)|
         replacements = group.split(",").flat_map { |range| expand_range(range, separator, expression) }
-        hosts.flat_map { |host| replacements.map { |replacement| host.sub(/\[#{group}\]/, replacement) } }
+        hosts.flat_map { |host| replacements.map { |replacement| host.sub("[#{group}]", replacement) } }
       end.uniq
     end
 
