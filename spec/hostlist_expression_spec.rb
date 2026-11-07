@@ -67,6 +67,10 @@ RSpec.describe "#hostlist_expression" do
     )
   end
 
+  it "multiple groups in order" do
+    expect(hostlist_expression("host-[1-2][a-b]")).to eq(%w[host-1a host-1b host-2a host-2b])
+  end
+
   it "colon as range connector" do
     expect(hostlist_expression("host-[1:3].com")).to eq(%w[host-1.com host-2.com host-3.com])
   end
