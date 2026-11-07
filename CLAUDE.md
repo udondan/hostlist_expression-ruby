@@ -11,7 +11,10 @@ bundle exec rubocop                                     # lint only (CI runs thi
 bundle exec rspec                                       # tests only (CI matrix: Ruby 3.3, 3.4, 4.0)
 bundle exec rspec spec/hostlist_expression_spec.rb:42   # single example by line
 bundle exec rspec -e "numeric from 1 to 99"             # single example by name
+qlty smells --all                                       # code smells (config in .qlty/qlty.toml)
 ```
+
+The `qlty` CI job fails a pull request that introduces new code smells compared to main.
 
 Specs run in random order with warnings enabled (`spec/spec_helper.rb`). Minimum Ruby is 3.3 (gemspec and `.rubocop.yml` TargetRubyVersion).
 

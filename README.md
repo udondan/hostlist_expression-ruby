@@ -7,6 +7,7 @@
 [![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.3-CC342D)](hostlist_expression.gemspec)
 [![CI](https://github.com/udondan/hostlist_expression-ruby/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/udondan/hostlist_expression-ruby/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/udondan/hostlist_expression-ruby/graph/badge.svg)](https://codecov.io/gh/udondan/hostlist_expression-ruby)
+[![Maintainability](https://qlty.sh/gh/udondan/projects/hostlist_expression-ruby/maintainability.svg)](https://qlty.sh/gh/udondan/projects/hostlist_expression-ruby)
 [![License](https://img.shields.io/github/license/udondan/hostlist_expression-ruby)](LICENSE)
 
 Ruby [gem](https://rubygems.org/gems/hostlist_expression) for expanding hostlist expressions.
