@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.4](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.3...v1.0.4) (2026-11-07)
+
+
+### Bug Fixes
+
+* resolve code smell and support regexp special characters as range separator ([#46](https://github.com/udondan/hostlist_expression-ruby/issues/46)) ([068edd9](https://github.com/udondan/hostlist_expression-ruby/commit/068edd9c3cd32e9e6cde552d39e65dafb793c592))
+
+
+### Dependencies
+
+* **deps:** update dependency zizmor to v1.32.0 ([#45](https://github.com/udondan/hostlist_expression-ruby/issues/45)) ([abb0123](https://github.com/udondan/hostlist_expression-ruby/commit/abb012365419c265a6d68abd571ba8cf28466a55))
+* **deps:** update jdx/mise-action action to v5.2.5 ([#43](https://github.com/udondan/hostlist_expression-ruby/issues/43)) ([ca9f028](https://github.com/udondan/hostlist_expression-ruby/commit/ca9f0287ff7c6f9f882ff1527a762ef35b20eaff))
+* **deps:** update jdx/mise-action action to v5.2.6 ([#44](https://github.com/udondan/hostlist_expression-ruby/issues/44)) ([89de0fb](https://github.com/udondan/hostlist_expression-ruby/commit/89de0fbe149311232fd28db09a483df8162c91f7))
+* **deps:** update ruby/setup-ruby action to v1.336.0 ([#41](https://github.com/udondan/hostlist_expression-ruby/issues/41)) ([6d8a0a5](https://github.com/udondan/hostlist_expression-ruby/commit/6d8a0a501c47576cba951d540b84496e46ee2a8d))
+
 ## [1.0.3](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.2...v1.0.3) (2026-11-01)
 
 
