@@ -2,33 +2,15 @@
 
 ## [1.0.3](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.2...v1.0.3) (2026-11-01)
 
-
-### Dependencies
-
-* **deps:** update dependency rubocop to v1.92.2 ([#40](https://github.com/udondan/hostlist_expression-ruby/issues/40)) ([8898b33](https://github.com/udondan/hostlist_expression-ruby/commit/8898b3311e71095676e6b891b1be98fd03eeebdd))
-* **deps:** update jdx/mise-action action to v5 ([#35](https://github.com/udondan/hostlist_expression-ruby/issues/35)) ([44bce05](https://github.com/udondan/hostlist_expression-ruby/commit/44bce05bf9440e28a9bfb3a871396749666dec2c))
-* **deps:** update jdx/mise-action action to v5.2.4 ([#38](https://github.com/udondan/hostlist_expression-ruby/issues/38)) ([d82b3ce](https://github.com/udondan/hostlist_expression-ruby/commit/d82b3ce291988a725ce0a443e402ffb93ef83cfb))
+Only development dependencies were updated. Nothing changed for users.
 
 ## [1.0.2](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.1...v1.0.2) (2026-10-26)
 
-
-### Dependencies
-
-* **deps:** update dependency rubocop to v1.92.1 ([#31](https://github.com/udondan/hostlist_expression-ruby/issues/31)) ([6f82ea9](https://github.com/udondan/hostlist_expression-ruby/commit/6f82ea91eb1cafb916f7b19bdfec11a236c543e3))
-* **deps:** update dependency ruby to v4.0.8 ([#29](https://github.com/udondan/hostlist_expression-ruby/issues/29)) ([1840693](https://github.com/udondan/hostlist_expression-ruby/commit/18406939659a0b850fa6bd50da5a917727091866))
-* **deps:** update dependency ruby to v4.0.9 ([#32](https://github.com/udondan/hostlist_expression-ruby/issues/32)) ([1d48ff6](https://github.com/udondan/hostlist_expression-ruby/commit/1d48ff6b31fba31cb99d359e64a7353a80861b90))
+Only development dependencies were updated. Nothing changed for users.
 
 ## [1.0.1](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.0...v1.0.1) (2026-10-13)
 
-
-### Dependencies
-
-* **deps:** lock file maintenance ([#16](https://github.com/udondan/hostlist_expression-ruby/issues/16)) ([4822a44](https://github.com/udondan/hostlist_expression-ruby/commit/4822a44225c582ad473882f4302a04c86afd74a1))
-* **deps:** lock file maintenance ([#17](https://github.com/udondan/hostlist_expression-ruby/issues/17)) ([9104edf](https://github.com/udondan/hostlist_expression-ruby/commit/9104edfd0cf0fa42a238761fbccf449eee2bc7c8))
-* **deps:** lock file maintenance ([#22](https://github.com/udondan/hostlist_expression-ruby/issues/22)) ([1a7630e](https://github.com/udondan/hostlist_expression-ruby/commit/1a7630ec45ea25622730f077480aa1bf7e95c0a9))
-* **deps:** update dependency rubocop to v1.92.0 ([#27](https://github.com/udondan/hostlist_expression-ruby/issues/27)) ([8294305](https://github.com/udondan/hostlist_expression-ruby/commit/82943057490c12cd2dfa3feacdfdc3b184c79d40))
-* **deps:** update dependency ruby to v4.0.6 ([#13](https://github.com/udondan/hostlist_expression-ruby/issues/13)) ([c2c589b](https://github.com/udondan/hostlist_expression-ruby/commit/c2c589bbc2a531a29ec0aa239162810af6513c54))
-* **deps:** update dependency ruby to v4.0.7 ([#15](https://github.com/udondan/hostlist_expression-ruby/issues/15)) ([2cccd5d](https://github.com/udondan/hostlist_expression-ruby/commit/2cccd5d2a554ac07a6cbe03bde485246d0db307f))
+Only development dependencies were updated. Nothing changed for users.
 
 ## [1.0.0](https://github.com/udondan/hostlist_expression-ruby/compare/v0.2.1...v1.0.0) (2026-09-15)
 
