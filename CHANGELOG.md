@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.3...v1.0.4) (2026-11-09)
+
+
+### Bug Fixes
+
+* resolve code smell and support regexp special characters as range separator ([#46](https://github.com/udondan/hostlist_expression-ruby/issues/46)) ([068edd9](https://github.com/udondan/hostlist_expression-ruby/commit/068edd9c3cd32e9e6cde552d39e65dafb793c592))
+
 ## [1.0.3](https://github.com/udondan/hostlist_expression-ruby/compare/v1.0.2...v1.0.3) (2026-11-01)
 
 Only development dependencies were updated. Nothing changed for users.
