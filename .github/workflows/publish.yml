@@ -31,9 +31,30 @@ jobs:
           ref: ${{ github.event.release.tag_name || inputs.tag }}
           persist-credentials: false
 
+      # The Ruby version comes from the mise.toml of the commit this workflow runs
+      # from, not from the release tag: tags published by hand from before Ruby was
+      # pinned in mise.toml don't have it.
+      - uses: actions/checkout@v7
+        with:
+          path: .workflow-ref
+          sparse-checkout: mise.toml
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Read Ruby version
+        id: ruby
+        run: |
+          version=$(sed -n 's/^ruby = "\(.*\)"$/\1/p' .workflow-ref/mise.toml)
+          rm -rf .workflow-ref
+          if [ -z "$version" ]; then
+            echo "::error::No ruby version in mise.toml"
+            exit 1
+          fi
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+
       - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
         with:
-          ruby-version: mise.toml
+          ruby-version: ${{ steps.ruby.outputs.version }}
 
       # Installed without bundler-cache, so a release is never built from a restored cache.
       - name: Install gems
