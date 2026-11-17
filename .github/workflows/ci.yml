@@ -22,6 +22,7 @@ jobs:
   # run is tested at a time. Pull requests from forks get a read-only token and
   # skip the wait.
   boarding-gate:
+    name: Queue
     if: >-
       github.event_name == 'push' ||
       github.event.pull_request.head.repo.full_name == github.repository
@@ -38,25 +39,70 @@ jobs:
     secrets:
       update-token: ${{ secrets.OVERRIDE_TOKEN }}
 
+  # Lint and tests only run if code or build config changed. Skipped outside of
+  # pull requests, so pushes to main always run the tests. Waits for
+  # boarding-gate like everything else: while another run holds the turn, this
+  # one likely needs a rebase anyway.
+  changes:
+    needs: boarding-gate
+    # Fail instead of skip if boarding-gate failed, see the test job.
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read # paths-filter lists the PR's files via the API
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - name: Check turn
+        if: needs.boarding-gate.result == 'failure' || needs.boarding-gate.result == 'cancelled'
+        run: exit 1
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        id: filter
+        with:
+          filters: |
+            code:
+              - lib/**
+              - spec/**
+              - Gemfile
+              - Gemfile.lock
+              - hostlist_expression.gemspec
+              - Rakefile
+              - mise.toml
+              - .rspec
+              - .rubocop.yml
+              - codecov.yml
+              - .github/workflows/ci.yml
+
   lint:
     name: Lint
-    if: github.event_name == 'pull_request'
+    needs: [boarding-gate, changes]
+    # Only on pull requests (changes is skipped otherwise) and only if code changed.
+    if: ${{ !cancelled() && needs.changes.outputs.code == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Check turn
+        if: needs.boarding-gate.result == 'failure' || needs.boarding-gate.result == 'cancelled'
+        run: exit 1
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
         with:
-          ruby-version: "4.0.9"
+          ruby-version: mise.toml
           bundler-cache: true
       - run: bundle exec rubocop
 
   actions:
     name: Lint workflows
-    if: github.event_name == 'pull_request'
+    needs: boarding-gate
+    # Fail instead of skip if boarding-gate failed, see the test job.
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Check turn
+        if: needs.boarding-gate.result == 'failure' || needs.boarding-gate.result == 'cancelled'
+        run: exit 1
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
@@ -78,11 +124,17 @@ jobs:
   # smells introduced by the pull request compared to main fail the job.
   qlty:
     name: Code smells
+    needs: boarding-gate
+    # Fail instead of skip if boarding-gate failed, see the test job.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
     steps:
+      - name: Check turn
+        if: needs.boarding-gate.result == 'failure' || needs.boarding-gate.result == 'cancelled'
+        run: exit 1
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
@@ -113,9 +165,12 @@ jobs:
 
   test:
     name: Test (Ruby ${{ matrix.ruby }})
-    needs: boarding-gate
-    # The wait is skipped for forks.
-    if: ${{ !cancelled() && (needs.boarding-gate.result == 'success' || needs.boarding-gate.result == 'skipped') }}
+    needs: [boarding-gate, changes]
+    # A skipped job counts as passed for required checks. Run the job even if
+    # boarding-gate failed and fail it in the first step. The wait is skipped
+    # for forks and changes is skipped outside of pull requests; otherwise only
+    # run if code changed.
+    if: ${{ !cancelled() && (needs.changes.result == 'skipped' || (needs.changes.result == 'success' && needs.changes.outputs.code == 'true')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -125,6 +180,9 @@ jobs:
       matrix:
         ruby: ["3.3", "3.4", "4.0"]
     steps:
+      - name: Check turn
+        if: needs.boarding-gate.result == 'failure' || needs.boarding-gate.result == 'cancelled'
+        run: exit 1
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
@@ -179,7 +237,7 @@ jobs:
 
   # The only test check the ruleset requires, whatever jobs are added later.
   required:
-    needs: [boarding-gate, lint, actions, qlty, test, coverage]
+    needs: [boarding-gate, changes, lint, actions, qlty, test, coverage]
     if: always()
     runs-on: ubuntu-latest
     steps:
