@@ -16,6 +16,8 @@ qlty smells --all                                       # code smells (config in
 
 The `qlty` CI job fails a pull request that introduces new code smells compared to main.
 
+CI (`.github/workflows/ci.yml`): every job waits for boarding-gate (the `Queue` job) and fails if it failed, so nothing runs in parallel while another run holds the turn. On pull requests, `Lint` and the test matrix only run if the `changes` job (`dorny/paths-filter`) found a changed code or build file; when the code starts depending on another file, add it to that filter, or the checks silently skip. Pushes to main always run the tests. The Ruby version for lint and publishing is pinned only in `mise.toml` (`ruby/setup-ruby` reads it from there); the test matrix lists the supported versions.
+
 Specs run in random order with warnings enabled (`spec/spec_helper.rb`). Minimum Ruby is 3.3 (gemspec and `.rubocop.yml` TargetRubyVersion).
 
 ## Architecture
