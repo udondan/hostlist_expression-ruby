@@ -1,0 +1,9 @@
+[tools]
+# Ruby for the lint job, publish and release-please (ruby/setup-ruby reads it from
+# here). The test job runs a matrix over the supported versions instead.
+ruby = "4.0.10"
+# Used by the actions job in ci.yml.
+actionlint = "1.7.12"
+# The runner's own shellcheck is older and reports differently. actionlint runs it over every `run:` block.
+shellcheck = "0.11.0"
+zizmor = "1.32.0"

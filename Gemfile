@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+gemspec
+
+group :development do
+  gem "rake", "13.4.2"
+  gem "rspec", "3.13.2"
+  gem "rubocop", "1.92.3"
+  gem "rubocop-rake", "0.7.1"
+  gem "rubocop-rspec", "3.10.2"
+  gem "simplecov", "1.3.2"
+  gem "simplecov-cobertura", "4.0.0"
+end

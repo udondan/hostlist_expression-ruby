@@ -1,0 +1,16 @@
+plugins:
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  Exclude:
+    - "vendor/**/*"
+
+# The gem exposes a top-level method, the spec describes that method.
+RSpec/DescribeClass:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes

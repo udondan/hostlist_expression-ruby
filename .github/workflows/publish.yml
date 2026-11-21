@@ -1,0 +1,65 @@
+---
+name: Publish
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish (e.g. 0.2.1)
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Uses RubyGems trusted publishing (OIDC), so no API key secret is needed.
+  # The trusted publisher on rubygems.org is bound to this workflow filename
+  # and the rubygems environment.
+  rubygems:
+    name: Publish to RubyGems
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          persist-credentials: false
+
+      # The Ruby version comes from the mise.toml of the commit this workflow runs
+      # from, not from the release tag: tags published by hand from before Ruby was
+      # pinned in mise.toml don't have it.
+      - uses: actions/checkout@v7
+        with:
+          path: .workflow-ref
+          sparse-checkout: mise.toml
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Read Ruby version
+        id: ruby
+        run: |
+          version=$(sed -n 's/^ruby = "\(.*\)"$/\1/p' .workflow-ref/mise.toml)
+          rm -rf .workflow-ref
+          if [ -z "$version" ]; then
+            echo "::error::No ruby version in mise.toml"
+            exit 1
+          fi
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+
+      - uses: ruby/setup-ruby@be3c7df29b3349ec6bcfc6b4792f1cf9f5237d18 # v1.343.0
+        with:
+          ruby-version: ${{ steps.ruby.outputs.version }}
+
+      # Installed without bundler-cache, so a release is never built from a restored cache.
+      - name: Install gems
+        run: bundle install
+        env:
+          BUNDLE_FROZEN: "true"
+
+      - uses: rubygems/release-gem@5c53f5308233b7c0f47411f0471b3faae6fa57b2 # v1.4.2
